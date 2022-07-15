@@ -19,6 +19,11 @@
             mainDep: '',
             subDep: '',
             subSubDep: '',
+            next: null,
+            pre: null,
+            len: 0,
+            offset: 0,
+            pageSize: 50
           }
         },
         components: {
@@ -98,21 +103,19 @@
             this.searchStart = true;
             let url = serverUrl+'/tel/byname/';
             if (q && dep){
-              url = url + '?q=' + q + '&dep=' + dep;
+              //url = url + '?q=' + q + '&dep=' + dep;
+              url = url + dep + "/" + q + "/"
             } else if (q && !dep){
-              url = url + '?q=' + q;
+              //url = url + '?q=' + q;
+              url = url + "0" + "/" + q + "/"
             } else if (!q && dep) {
-              url = url + '?dep=' + dep;
+              //url = url + '?dep=' + dep;
+              url = url + dep + "/" + "0" + "/"
             }
-            axios.get(url)
-                .then(response => {
-                    this.searchResults = response.data;
-                    this.searchStart = false;
-                })
-                .catch(error => {
-                        this.errorMessage = error //'خطایی در گرفتن اطلاعات کاربر رخ داد'; //error.data
-                        this.searchStart = false;
-              });
+            else {
+              url = url + "0/0/";
+            }
+            this.getPage(url);
           },
           updatefamily(newValue) {
             this.family = newValue
@@ -121,6 +124,40 @@
             $event.target.blur();
             this.submitSearch();
           },
+          getPage(url){
+              let count = 0;
+              axios.get(url)
+                .then(response => {
+                    this.searchResults = response.data.results;
+                    this.next = response.data.next;
+                    this.pre = response.data.previous;
+                    this.searchStart = false;
+                })
+                .catch(error => {
+                    this.errorMessage = error //'خطایی در گرفتن اطلاعات کاربر رخ داد'; //error.data
+                    this.searchStart = false;
+              });
+            },
+          getNext(){
+            this.offset = (parseInt(this.next.split('=')[1]) - 1) * this.pageSize;
+            this.getPage(this.next);
+             
+          },
+          getPre(){
+            let page = this.pre.split('=')[1];
+            if (page){
+              this.offset = (parseInt(page) - 1) * this.pageSize;
+            }
+            else{
+              this.offset = 0;
+            }
+            this.getPage(this.pre);
+          }
+        },
+        computed: {
+          Offset(){
+
+          }
         },
         created(){
           this.depList0();
@@ -177,7 +214,18 @@
             </div>
         </div>
       </div>
-      <TableResults :rows="searchResults"/>
+      <TableResults :rows="searchResults" :offset="offset"/>
+       <div class="flex flex-row items-center my-7">
+            <!-- Previous Button -->
+            <button v-if="next"  type="button" @click="getNext" class="inline-flex items-center py-2 px-4 mr-3 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+              <svg class="mr-2 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd"></path></svg>
+                بعدی
+            </button>
+            <button v-if="pre"  type="button" @click="getPre" class="inline-flex items-center py-2 px-4 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                قبلی
+              <svg class="ml-2 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+            </button>
+        </div>
     </div>
       
 </template>

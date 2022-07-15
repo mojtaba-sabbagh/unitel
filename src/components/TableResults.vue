@@ -1,15 +1,18 @@
 <script>
+import Buttons from './elements/Buttons.vue';
     export default {
+  components: { Buttons },
+
         props: {
             rows: null,
+            offset: 0,
         },
-
     }
 </script>
 
 <template>
-        <div dir="rtl" class="font-farsi sm:-mx-6 lg:-mx-8">
-            <div class="py-2 sm:px-6 lg:px-8">
+    <div dir="rtl" class="font-farsi sm:-mx-6 lg:-mx-8">
+        <div class="py-2 sm:px-6 lg:px-8">
             <div class="">
               <table class="table-fixed border">
                 <thead class="bg-white border-b">
@@ -45,7 +48,7 @@
                     <tr class="bg-gray-100 border-b
                                 hover:text-gray-900 hover:ring-1 mb-20" 
                         v-for="(row, index) in rows" :key="index">
-                        <td class="px-6 py-4 text-sm font-medium text-gray-800">{{ index+1 }}</td>
+                        <td class="px-6 py-4 text-sm font-medium text-gray-800">{{ index+offset+1 }}</td>
                         <td class="text-sm text-gray-800 font-light px-6 py-4">
                             {{ row.full_name }}
                         </td>
@@ -71,8 +74,8 @@
                 </tbody>
                 </table>
             </div>
-            </div>
         </div>
+    </div>
 </template>>
 
 <style>
