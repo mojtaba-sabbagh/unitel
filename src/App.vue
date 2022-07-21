@@ -12,14 +12,14 @@
 </script>
 
 <template>
-  <div dir="rtl" class="mr-10 my-7 grid grid-cols-3 gap-6 items-center">
-      <img src="@/assets/logo-new.png"  width="75%"/>
-      <p class="mt-1 mb-5 text-xl text-gray-600 p-2 text-center">
-            <span class="bg-red-100 py-2 px-6 text-2xl font-farsi hover:text-gray-900 hover:ring-1">
+  <div dir="rtl" class="md:mr-10 md:my-7 md:grid grid-cols-3 gap-6 items-center">
+      <img class="invisible md:visible" src="@/assets/logo-new.png"  width="75%"/>
+      <p class="mt-1 md:mb-5 text-xl text-gray-600 p-2 text-center">
+            <span class="bg-red-100 py-2 px-6 md:text-2xl font-farsi hover:text-gray-900 hover:ring-1">
                 سامانه دفتر تلفن دانشکاه
             </span>
       </p>
-      <img src="@/assets/IT-logo2.png" width="75%" class="items-right"/>
+      <img src="@/assets/IT-logo2.png" width="75%" class="items-right invisible md:visible"/>
    </div>
   
   <Search />

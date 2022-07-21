@@ -23,7 +23,9 @@
             pre: null,
             len: 0,
             offset: 0,
-            pageSize: 50
+            pageSize: 50,
+            searchBy: 'sname',
+            finalPost: 0,
           }
         },
         components: {
@@ -54,6 +56,15 @@
              axios.get(serverUrl+'/tel/deps/?level=2'+'&super-dep='+sdep)
                 .then(response => {
                     this.subSubDepOptions = response.data;
+                })
+                .catch(error => {
+                        this.errorMessage = error //'خطایی در گرفتن اطلاعات کاربر رخ داد'; //error.data
+                });
+          },
+          postList(){
+            axios.get(serverUrl+'/tel/posts/')
+                .then(response => {
+                    this.searchPostOptions = response.data;
                 })
                 .catch(error => {
                         this.errorMessage = error //'خطایی در گرفتن اطلاعات کاربر رخ داد'; //error.data
@@ -97,25 +108,46 @@
               this.updateSubDep(this.subDep);
             }
           },
+          updateSearchPost(newValue){
+             if (newValue && newValue != '0'){
+              this.finalPost = newValue;
+            }
+            else {
+              this.finalPost = 0;
+            }
+          },
           submitSearch(){
-            let q = this.family;
+            let q = '';
             let dep = this.finalDep;
             this.searchStart = true;
-            let url = serverUrl+'/tel/byname/';
+            let url = '';
+            this.offset = 0;
+            if (this.sname){
+              q = this.family;
+              url = serverUrl+'/tel/byname/';
+            }
+            else if (this.spost) {
+              q = this.finalPost;
+              url = serverUrl+'/tel/bypost/';
+            }
+            else {
+              return;
+            }
             if (q && dep){
               //url = url + '?q=' + q + '&dep=' + dep;
-              url = url + dep + "/" + q + "/"
+              url = url + dep + "/" + q + "/";
             } else if (q && !dep){
               //url = url + '?q=' + q;
-              url = url + "0" + "/" + q + "/"
+              url = url + "0" + "/" + q + "/";
             } else if (!q && dep) {
               //url = url + '?dep=' + dep;
-              url = url + dep + "/" + "0" + "/"
+              url = url + dep + "/" + "0" + "/";
             }
             else {
               url = url + "0/0/";
             }
-            this.getPage(url);
+          //search api call
+          this.getPage(url);
           },
           updatefamily(newValue) {
             this.family = newValue
@@ -155,12 +187,22 @@
           }
         },
         computed: {
-          Offset(){
-
-          }
+          sname(){
+            if (this.searchBy == 'sname'){
+              return true;
+            }
+            return false;
+          },
+          spost(){
+            if (this.searchBy == 'spost'){
+              return true;
+            }
+            return false;
+          },
         },
         created(){
           this.depList0();
+          this.postList();
         },
    }
 </script>
@@ -168,14 +210,14 @@
 <template>
    <div class="flex flex-col items-center">
     <div class="text-xl text-gray-600 bg-gray-50 font-farsi font-bold hover:text-gray-900 
-                  hover:ring-1 m-5 border-2 p-6 w-2/3" dir="rtl">
+                  hover:ring-1 md:m-5 border-2 p-6 w-2/3" dir="rtl">
           
-          <p class="mt-0 mb-5 text-xl text-gray-600 m-5 p-2 text-center">
-              <span class="bg-red-50 py-2 px-6 font-farsi hover:text-gray-900 hover:ring-1">
+          <p class="mt-0 md:mb-5 text-lg text-gray-600 md:m-5 p-2 text-center">
+              <span class="bg-red-50 py-2 px-6 font-farsi sm:text-2xs hover:text-gray-900 hover:ring-1">
                   محدوده جستجو
               </span>
           </p>
-        <div class="grid grid-cols-3 gap-4 font-farsi  items-center items-stretch">
+        <div class="md:grid  md:grid-cols-3 md:gap-4 flex flex-col font-farsi  items-center items-stretch">
           <DropDown label_title="واحد اصلی"  :options="mainDepOptions"
                             @onChangeValue="updateDep" :order=1 />
           <DropDown label_title="زیر واحد اصلی"  :options="mainSubDepOptions"
@@ -185,18 +227,36 @@
         </div>
       </div>
 
-      <div class="text-xl text-gray-600 bg-gray-50 font-farsi font-bold hover:text-gray-900 
+      <div class="flex flex-col md:block items-center text-xl text-gray-600 bg-gray-50 font-farsi font-bold hover:text-gray-900 
                   hover:ring-1 m-5 border-2 p-6 w-2/3" dir="rtl">
           
-          <p class="mt-0 mb-5 text-xl text-gray-600 m-5 p-2 text-center">
-              <span class="bg-red-50 py-2 px-6 font-farsi hover:text-gray-900 hover:ring-1">
+          <p class="w-full mt-0 mb-5 text-xs font-bold md:text-lg text-gray-600 m-5 p-2 text-center">
+              <span v-if="sname" class="bg-red-50 py-2 px-6 font-farsi hover:text-gray-900 hover:ring-1">
                   قسمتی از نام یا نام خانوادگی را بنویسید
+              </span>
+               <span v-if="spost" class="bg-red-50 py-2 px-6 font-farsi hover:text-gray-900 hover:ring-1">
+                  پست سازمانی را انتخاب کنید
               </span>
           </p>
         <div class="grid grid-cols-1 gap-4 font-farsi">
-          <InputText  v-model:value="family" @onChangeValue="updatefamily"
+
+          <div class="flex">
+              <div class="flex items-center mr-4">
+                  <input id="inline-radio" type="radio" v-model="searchBy" value="sname" name="inline-radio-group" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                  <label for="inline-radio" class="mr-1 text-xs md:text-sm font-medium text-gray-900 dark:text-gray-300"> جستجو برحسب نام </label>
+              </div>
+              <div class="flex items-center mr-4">
+                  <input id="inline-2-radio" type="radio" v-model="searchBy" value="spost" name="inline-radio-group" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                  <label for="inline-2-radio" class="mr-1 text-xs md:text-sm font-medium text-gray-900 dark:text-gray-300">جستجو برحسب پست سازمانی </label>
+              </div>
+          </div>
+
+          <InputText  v-if="sname" v-model:value="family" @onChangeValue="updatefamily"
                           input_placeholder="نژادمحمدی" @keyup.enter="$event.target.blur()"
                           :order=1 @onStateChange="updateErrorArray"/>
+          <DropDown v-if="spost"  :options="searchPostOptions"
+                            @onChangeValue="updateSearchPost" :order=5 />
+
           <div class="flex justify-center">
               <button type="button" @click="submitSearch"
                   class="block w-1/2 mt-7 px-7 py-3 bg-blue-600 text-white font-medium text-sm 

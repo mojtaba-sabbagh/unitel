@@ -66,7 +66,7 @@
             <p class="inline text-xl text-red-700 dark:text-red-500"> <span v-if="required"> * </span> </p>
         </label>
         <select v-model="itemSelected" @blur="constraint"  :disabled="disabled" :required="required"
-           class="form-select form-select-sm
+           class="form-select form-select-sm w-full
            appearance-none border text-sm text-center rounded-lg p-2.5
            bg-white-50 border-gray-500 text-gray-900 placeholder-gray-200 focus:ring-gray-500 focus:border-gray-500 dark:bg-gray-100 dark:border-gray-400"
            v-bind:class="{ 'bg-green-50 border-green-500 text-green-900 placeholder-green-200 focus:ring-green-500 focus:border-green-500 dark:bg-green-100 dark:border-green-400'
