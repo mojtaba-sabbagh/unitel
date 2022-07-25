@@ -230,9 +230,9 @@
       <div class="flex flex-col md:block items-center text-xl text-gray-600 bg-gray-50 font-farsi font-bold hover:text-gray-900 
                   hover:ring-1 m-5 border-2 p-6 w-2/3" dir="rtl">
           
-          <p class="w-full mt-0 mb-5 text-xs font-bold md:text-lg text-gray-600 m-5 p-2 text-center">
+          <p class="w-full mt-0 mb-5 items-center text-xs font-bold md:text-lg text-gray-600 m-5 p-2 text-center">
               <span v-if="sname" class="bg-red-50 py-2 px-6 font-farsi hover:text-gray-900 hover:ring-1">
-                  قسمتی از نام یا نام خانوادگی را بنویسید
+                  قسمتی از نام یا فامیل را بنویسید
               </span>
                <span v-if="spost" class="bg-red-50 py-2 px-6 font-farsi hover:text-gray-900 hover:ring-1">
                   پست سازمانی را انتخاب کنید
