@@ -76,7 +76,7 @@
                            'ltr-grid': l2r}"
                             aria-label=".form-select-sm example">
              <option v-bind:value="0" selected>
-                انتخاب کنید
+                همه واحدها
             </option>
             <option v-for="option in options" v-bind:value="option.ID" v-bind:key="option.ID">
                 {{ option.text }}

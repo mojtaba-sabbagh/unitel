@@ -35,7 +35,11 @@
         },
         methods:{
           depList0(){
-             axios.get(serverUrl+'/tel/deps/?level=0')
+             axios({
+                    method: 'get',
+                    url: serverUrl+'/tel/deps/?level=0',
+                    headers: {"Content-Type": "application/json"},
+                    })
                 .then(response => {
                     this.mainDepOptions = response.data;
                 })
@@ -44,7 +48,11 @@
                 });
           },
           depList1(sdep){
-             axios.get(serverUrl+'/tel/deps/?level=1'+'&super-dep='+sdep)
+             axios({
+                    method: 'get',
+                    url: serverUrl+'/tel/deps/?level=1'+'&super-dep='+sdep,
+                    headers: {"Content-Type": "application/json"},
+                    })
                 .then(response => {
                     this.mainSubDepOptions = response.data;
                 })
@@ -53,7 +61,11 @@
                 });
           },
           depList2(sdep){
-             axios.get(serverUrl+'/tel/deps/?level=2'+'&super-dep='+sdep)
+             axios({
+                    method: 'get',
+                    url: serverUrl+'/tel/deps/?level=2'+'&super-dep='+sdep,
+                    headers: {"Content-Type": "application/json"},
+                    })
                 .then(response => {
                     this.subSubDepOptions = response.data;
                 })
@@ -62,7 +74,11 @@
                 });
           },
           postList(){
-            axios.get(serverUrl+'/tel/posts/')
+            axios({
+                    method: 'get',
+                    url: serverUrl+'/tel/posts/',
+                    headers: {"Content-Type": "application/json"},
+                    })
                 .then(response => {
                     this.searchPostOptions = response.data;
                 })
@@ -158,7 +174,11 @@
           },
           getPage(url){
               let count = 0;
-              axios.get(url)
+              axios({
+                    method: 'get',
+                    url: url,
+                    headers: {"Content-Type": "application/json"},
+                    })
                 .then(response => {
                     this.searchResults = response.data.results;
                     this.next = response.data.next;

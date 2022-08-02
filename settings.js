@@ -1,1 +1,1 @@
-export var serverUrl = 'http://127.0.0.1:5000'; //'http://127.0.0.1:5000';
+export var serverUrl = 'http://127.0.0.1:5000' //'http://192.168.1.104:5000';
