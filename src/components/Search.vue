@@ -272,10 +272,10 @@
           </div>
 
           <InputText  v-if="sname" v-model:value="family" @onChangeValue="updatefamily"
-                          input_placeholder="نژادمحمدی" @keyup.enter="$event.target.blur()"
+                          input_placeholder="نژادمحمدی" @onEnterKey="submitSearch"
                           :order=1 @onStateChange="updateErrorArray"/>
           <DropDown v-if="spost"  :options="searchPostOptions"
-                            @onChangeValue="updateSearchPost" :order=5 />
+                            @onChangeValue="updateSearchPost" :order=5 @onEnterKey="submitSearch"/>
 
           <div class="flex justify-center">
               <button type="button" @click="submitSearch"

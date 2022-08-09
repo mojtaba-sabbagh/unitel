@@ -64,6 +64,10 @@
             this.$emit('onChangeValue', this.dataValue);
             this.$emit('onStateChange', this.hasError, this.order);
       },
+      onEnterFunc(){
+        this.constraint();
+        this.$emit('onEnterKey');
+      },
        convert(str) {
        let
         persianNumbers = [/۰/g, /۱/g, /۲/g, /۳/g, /۴/g, /۵/g, /۶/g, /۷/g, /۸/g, /۹/g],
@@ -91,7 +95,7 @@
            {{ label_title }}
             <p class="inline text-xl text-red-700 dark:text-red-500"><span v-if="required"> * </span></p>
         </label>
-        <input type="text" id="input-success" v-model="dataValue" @blur="constraint" 
+        <input type="text" id="input-success" v-model="dataValue" @blur="constraint" @keyup.enter="onEnterFunc"
             :disabled="disabled" :required="required"
            class="font-farsi border text-sm rounded-lg p-2.5
            bg-white-50 border-gray-500 text-gray-900 placeholder-gray-200 focus:ring-gray-500 focus:border-gray-500 dark:bg-gray-100 dark:border-gray-400"
