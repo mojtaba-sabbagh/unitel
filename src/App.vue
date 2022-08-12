@@ -12,14 +12,14 @@
 </script>
 
 <template>
-  <div dir="rtl" class="md:mr-10 md:my-7 md:grid grid-cols-3 gap-6 items-center">
-      <img class="invisible md:visible" src="@/assets/logo-new.png"  width="75%"/>
-      <p class="mt-1 md:mb-5 text-xl text-gray-600 p-2 text-center">
+  <div dir="rtl" class="md:mr-10 mt-5 md:grid grid-cols-3 gap-6 items-center">
+      <img class="invisible md:visible w-0 md:w-64" src="@/assets/logo-new.png"/>
+      <p class="mt-1 mb-5 text-xl text-gray-600 p-2 text-center">
             <span class="bg-red-100 py-2 px-6 md:text-2xl font-farsi hover:text-gray-900 hover:ring-1">
                 سامانه دفتر تلفن دانشکاه
             </span>
       </p>
-      <img src="@/assets/IT-logo2.png" width="75%" class="items-right invisible md:visible"/>
+      <img src="@/assets/IT-logo2.png" class="items-right invisible w-0 md:w-64 md:visible"/>
    </div>
   
   <Search />
@@ -44,4 +44,5 @@ body {
   background-repeat: no-repeat;
   background-position: center;
 }
+
 </style>
