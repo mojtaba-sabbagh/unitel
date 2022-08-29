@@ -192,6 +192,7 @@
             },
           getNext(){
             this.offset = (parseInt(this.next.split('=')[1]) - 1) * this.pageSize;
+            console.log(this.next);
             this.getPage(this.next);
              
           },

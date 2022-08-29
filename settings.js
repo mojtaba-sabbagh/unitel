@@ -1,1 +1,1 @@
-export var serverUrl = 'http://tel.vru.ac.ir'; //'http://localhost:5000'  //'http://192.168.1.104:5000';
+export var serverUrl = 'https://localhost'; //'https://tel.vru.ac.ir';  //'http://192.168.1.104:5000';
